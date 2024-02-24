@@ -106,7 +106,7 @@ class ToolMakefile(object):
         """Check if the directory is in the system path"""
         path = self.manifest_dict.get(path_key)
         bin_name = self.get_tool_bin()
-        return os.path.exists(os.path.join(path, bin_name))
+        return os.path.exists(os.path.join(path, bin_name).split()[0])
 
     def _check_in_system_path(self):
         """Check if if in the system path exists a file named (name)"""
