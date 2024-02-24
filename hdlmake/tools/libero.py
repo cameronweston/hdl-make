@@ -26,7 +26,8 @@
 
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
-from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SDCFile, PDCFile
+from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SDCFile, PDCFile, SourceFile
+from ..util import shell
 
 
 class ToolLibero(MakefileSyn):
@@ -43,6 +44,7 @@ class ToolLibero(MakefileSyn):
     STANDARD_LIBS = ['ieee', 'std']
 
     _LIBERO_SOURCE = 'create_links {0} {{srcfile}}'
+    _LIBERO_LIB = 'add_file_to_library -library {{library}} -file {{srcfile}}'
 
     SUPPORTED_FILES = {
         SDCFile: _LIBERO_SOURCE.format('-sdc'),
@@ -52,13 +54,19 @@ class ToolLibero(MakefileSyn):
         VHDLFile: _LIBERO_SOURCE.format('-hdl_source'),
         VerilogFile: _LIBERO_SOURCE.format('-hdl_source')}
 
+    HDL_LIBRARIES = {
+        VHDLFile: _LIBERO_LIB.format(),
+        VerilogFile: _LIBERO_LIB.format()
+                }
+
     CLEAN_TARGETS = {'clean': ["$(PROJECT)"],
                      'mrproper': ["*.pdb", "*.stp"]}
 
     TCL_CONTROLS = {
         'create': 'new_project -location {{./{project}}} -name {{{project}}}'
-                  ' -hdl {{VHDL}} -family {{{family}}} -die {{{device}}}'
-                  ' -package {{{package}}} -speed {{{grade}}} -die_voltage {{1.5}}',
+                  ' -hdl {{{language}}} -family {{{family}}} -die {{{device}}}'
+                  ' -package {{{package}}} -speed {{{grade}}} -die_voltage {{1.5}}'
+                  ' -adv_options {{IO_DEFT_STD:{io_deft_std}}}',
         'open': 'open_project -file {$(PROJECT)/$(PROJECT_FILE)}',
         'save': 'save_project',
         'close': 'close_project',
@@ -90,6 +98,39 @@ class ToolLibero(MakefileSyn):
         super(ToolLibero, self).__init__()
         self._tcl_controls.update(ToolLibero.TCL_CONTROLS)
 
+    def _makefile_syn_files_predefinelibs(self):
+        """create libraries before adding files to the files.tcl file"""
+        libraries = self.get_all_libs()
+        if len(libraries) > 1:
+          for libname in  libraries:
+            # Libero throws an error is work is added
+            if libname != 'work':
+                self.writeln('\t\t@echo add_library -library ' + libname + ' >> $@')
+
+    def _makefile_syn_files_map_files_to_lib(self):
+        """map specific files to specific libraries when it has to be a separate command"""
+        fileset_dict = {}
+        fileset_dict.update(self.HDL_LIBRARIES)
+
+        libraries = self.get_all_libs()
+        if len(libraries) > 1:
+          for srcfile in self.fileset.sort():
+            command = fileset_dict.get(type(srcfile))
+            # Put the file in files.tcl only if it is supported.
+            #logging.info(self.TOOL_INFO['name'] + " looping")
+
+            if command is not None:
+                # Libraries are defined only for hdl files.
+                if isinstance(srcfile, SourceFile):
+                    library = srcfile.library
+                else:
+                    library = None
+
+                command = command.format(srcfile=shell.tclpath(srcfile.rel_path()),
+                                         library=library)
+                command = "\t\techo '{}' >> $@".format(command)
+                self.writeln(command)
+
     def _makefile_syn_tcl(self):
         """Create a Libero synthesis project by TCL"""
         syn_project = self.manifest_dict["syn_project"]
@@ -97,17 +138,27 @@ class ToolLibero(MakefileSyn):
         syn_device = self.manifest_dict["syn_device"]
         syn_grade = self.manifest_dict["syn_grade"]
         syn_package = self.manifest_dict["syn_package"]
+        syn_lang = self.manifest_dict.get("language", "VHDL")
+        syn_io_deft_std = self.manifest_dict.get('syn_io_deft_std', "LVCMOS33")
+        project_opt = self.manifest_dict.get('project_opt', None)
         # Template substitute for 'create'.
         create_tmp = self._tcl_controls["create"]
-        self._tcl_controls["create"] = create_tmp.format(project=syn_project,
-                                                         family=syn_family,
-                                                         device=syn_device,
-                                                         package=syn_package,
-                                                         grade=syn_grade)
+        create_tmp = create_tmp.format(project=syn_project,
+                                       language=syn_lang.upper(),
+                                       family=syn_family,
+                                       device=syn_device,
+                                       package=syn_package,
+                                       grade=syn_grade,
+                                       io_deft_std=syn_io_deft_std
+                                       )
+        if project_opt is not None:
+            create_tmp += ' ' + project_opt
+        self._tcl_controls["create"] = create_tmp
         project_tmp = self._tcl_controls["project"]
         synthesis_constraints = []
         compilation_constraints = []
         ret = []
+
         # First stage: linking files
         for file_aux in self.fileset.sort():
             if isinstance(file_aux, SDCFile):
@@ -134,7 +185,12 @@ class ToolLibero(MakefileSyn):
                 '-module {$(TOP_MODULE)::work} -input_type {constraint}'
             ret.append(line)
         # Fourth stage: set root/top module
-        line = 'set_root -module {$(TOP_MODULE)::work}'
+        library_for_top_module = str(self.get_library_for_top_module())
+        libraries = self.get_all_libs()
+        if len(libraries) > 1:
+           line = 'set_root -module {$(TOP_MODULE)::' + library_for_top_module + '}'
+        else:
+           line = 'set_root -module {$(TOP_MODULE)}'
         ret.append(line)
         self._tcl_controls['project'] = project_tmp.format('\n'.join(ret))
         super(ToolLibero, self)._makefile_syn_tcl()

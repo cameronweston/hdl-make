@@ -144,10 +144,10 @@ class ToolLiberoSoC(MakefileSyn):
         #logging.info(self.TOOL_INFO['name'] + " _makefile_syn_files_predefinelibs got family_name as:" + syn_family)
         if syn_family == "PolarFireSoC":
            self._tcl_controls['bitstream'] = self._BITSTREAM_POLARFIRESOC
-          #logging.info(self.TOOL_INFO['name'] + " set GENERATEPROGRAMMINGDATA for PolarfireSoc.")
-        elif syn_family == "IGLOO2" or syn_family == 'SmartFusion2':
+          #logging.info(self.TOOL_INFO['name'] + " set GENERATEPROGRAMMINGDATA for SOC.")
+        elif syn_family == "IGLOO2" or syn_family == 'SmartFusion2' or syn_family == "RTG4":
            self._tcl_controls['bitstream'] = self._BITSTREAM_IGLOO2
-           #logging.info(self.TOOL_INFO['name'] + " set GENERATEPROGRAMMINGDATA for IGLOO2.")
+           #logging.info(self.TOOL_INFO['name'] + " set GENERATEPROGRAMMINGDATA for FPGA fabric.")
         else:
            logging.info(self.TOOL_INFO['name'] + ":TODO:  Somebody needs to add device support for this family, PolarFireSoC and IGLOO2 are supported. Can you do it?")
 
