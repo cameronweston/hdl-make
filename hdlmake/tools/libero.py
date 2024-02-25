@@ -65,8 +65,7 @@ class ToolLibero(MakefileSyn):
     TCL_CONTROLS = {
         'create': 'new_project -location {{./{project}}} -name {{{project}}}'
                   ' -hdl {{{language}}} -family {{{family}}} -die {{{device}}}'
-                  ' -package {{{package}}} -speed {{{grade}}} -die_voltage {{1.5}}'
-                  ' -adv_options {{IO_DEFT_STD:{io_deft_std}}}',
+                  ' -package {{{package}}} -speed {{{grade}}} -die_voltage {{1.5}}',
         'open': 'open_project -file {$(PROJECT)/$(PROJECT_FILE)}',
         'save': 'save_project',
         'close': 'close_project',
@@ -139,7 +138,6 @@ class ToolLibero(MakefileSyn):
         syn_grade = self.manifest_dict["syn_grade"]
         syn_package = self.manifest_dict["syn_package"]
         syn_lang = self.manifest_dict.get("language", "VHDL")
-        syn_io_deft_std = self.manifest_dict.get('syn_io_deft_std', "LVCMOS33")
         project_opt = self.manifest_dict.get('project_opt', None)
         # Template substitute for 'create'.
         create_tmp = self._tcl_controls["create"]
@@ -148,8 +146,7 @@ class ToolLibero(MakefileSyn):
                                        family=syn_family,
                                        device=syn_device,
                                        package=syn_package,
-                                       grade=syn_grade,
-                                       io_deft_std=syn_io_deft_std
+                                       grade=syn_grade
                                        )
         if project_opt is not None:
             create_tmp += ' ' + project_opt

@@ -17,7 +17,7 @@ SYN_DEVICE := anfpga
 SYN_PACKAGE := ff
 SYN_GRADE := 3
 
-TCL_CREATE := new_project -location {./demo} -name {demo} -hdl {VHDL} -family {ProASIC3} -die {anfpga} -package {ff} -speed {3} -die_voltage {1.5} -adv_options {IO_DEFT_STD:LVCMOS33}
+TCL_CREATE := new_project -location {./demo} -name {demo} -hdl {VHDL} -family {ProASIC3} -die {anfpga} -package {ff} -speed {3} -die_voltage {1.5}
 TCL_OPEN := open_project -file {$(PROJECT)/$(PROJECT_FILE)}
 TCL_SAVE := save_project
 TCL_CLOSE := close_project
