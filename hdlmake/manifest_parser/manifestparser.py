@@ -267,6 +267,17 @@ class ManifestParser(ConfigParser):
             help="Additional options for GHDL",
             type='')
         self.add_delimiter()
+        vivado_sim_options = [
+            {'name': 'xvlog_opt',
+             'default': "",
+             'help': "Additional options for verilog",
+             'type': ''},
+            {'name': 'xvhdl_opt',
+             'default': "",
+             'help': "Additional options for vhdl",
+             'type': ''}]
+        self.add_option_list(vivado_sim_options)
+        self.add_delimiter()
 
     def add_option_list(self, option_list):
         """Add to the parser a list with the options and their keys"""

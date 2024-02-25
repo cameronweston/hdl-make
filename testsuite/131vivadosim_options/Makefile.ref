@@ -3,20 +3,24 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
-TOP_MODULE := gate
+TOP_MODULE := gate3_tb
 
-XVHDL_OPT := 
+XVHDL_OPT := -2008
 
-XVLOG_OPT := 
+XVLOG_OPT := -relax -nolog
 
 #target for performing local simulation
 local: sim_pre_cmd simulation sim_post_cmd
 
-VERILOG_SRC := 
-VERILOG_OBJ := 
+VERILOG_SRC := ../files/gate3_tb.v \
+
+VERILOG_OBJ := work/gate3_tb/.gate3_tb_v \
+
 VHDL_SRC := ../files/gate.vhdl \
+../files/gate3.vhd \
 
 VHDL_OBJ := work/gate/.gate_vhdl \
+work/gate3/.gate3_vhd \
 
 LIBS := work
 LIB_IND := work/.work
@@ -29,12 +33,27 @@ work/gate/.gate_vhdl: ../files/gate.vhdl
 		@mkdir -p $(dir $@) && touch $@
 
 
+work/gate3/.gate3_vhd: ../files/gate3.vhd \
+work/gate/.gate_vhdl
+		xvhdl --work work $(XVHDL_OPT) $<
+		@mkdir -p $(dir $@) && touch $@
+
+
+work/gate3_tb/.gate3_tb_v: ../files/gate3_tb.v \
+work/gate3/.gate3_vhd
+		xvlog $(XVLOG_OPT) $<
+		@mkdir -p $(dir $@) && touch $@
+
+
 project.tcl: Makefile
 	@echo "create_project -force $(TOP_MODULE)_prj ./" > $@
 	@echo add_files -norecurse '{' >> $@
 	@echo '../files/gate.vhdl' >> $@
+	@echo '../files/gate3.vhd' >> $@
+	@echo '../files/gate3_tb.v' >> $@
 	@echo '}' >> $@
 	@echo 'set_property LIBRARY work [get_files ../files/gate.vhdl]' >> $@
+	@echo 'set_property LIBRARY work [get_files ../files/gate3.vhd]' >> $@
 	@echo "exit" >> $@
 
 project: project.tcl

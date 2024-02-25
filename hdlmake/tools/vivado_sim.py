@@ -49,8 +49,8 @@ class ToolVivadoSim(ToolXilinxProject, MakefileSim):
                                "work", "xsim.dir"],
                      'mrproper': ["*.wdb", "*.vcd"]}
 
-    SIMULATOR_CONTROLS = {'vlog': 'xvlog $<',
-                          'vhdl': 'xvhdl --work {work} $<',
+    SIMULATOR_CONTROLS = {'vlog': 'xvlog $(XVLOG_OPT) $<',
+                          'vhdl': 'xvhdl --work {work} $(XVHDL_OPT) $<',
                           'compiler': 'xelab -debug all $(TOP_MODULE) '
                                       '-s $(TOP_MODULE)'}
 
@@ -68,6 +68,13 @@ class ToolVivadoSim(ToolXilinxProject, MakefileSim):
         self.writeln("project: project.tcl")
         self.writeln("\t{} $<".format(self.get_tool_bin()))
         self.writeln()
+
+    def _makefile_sim_options(self):
+        """Print the Vivado Sim options to the Makefile"""
+        xvhdl_opt = self.manifest_dict.get("xvhdl_opt", '')
+        self.writeln("XVHDL_OPT := {xvhdl_opt}\n".format(xvhdl_opt=xvhdl_opt))
+        xvlog_opt = self.manifest_dict.get("xvlog_opt", '')
+        self.writeln("XVLOG_OPT := {xvlog_opt}\n".format(xvlog_opt=xvlog_opt))
 
     def _makefile_sim_compilation(self):
         """Generate compile simulation Makefile target for Vivado Simulator"""
