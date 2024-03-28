@@ -11,6 +11,7 @@ def load_syn_tool(tool_name):
     from .vivado import ToolVivado
     from .quartus import ToolQuartus
     from .diamond import ToolDiamond
+    from .radiant import ToolRadiant
     from .libero import ToolLibero
     from .liberosoc import ToolLiberoSoC
     from .icestorm import ToolIcestorm
@@ -23,7 +24,8 @@ def load_syn_tool(tool_name):
                        'libero': ToolLibero,
                        'liberosoc': ToolLiberoSoC,
                        'icestorm': ToolIcestorm,
-                       'ghdl': GhdlSyn}
+                       'ghdl': GhdlSyn,
+                       'radiant' : ToolRadiant}
     if tool_name in available_tools:
         logging.debug("Synthesis tool to be used found: %s", tool_name)
         return available_tools[tool_name]()

@@ -612,6 +612,9 @@ def test_libero_libraries_130():
 def test_vivado_sim_options_131():
     run_compare(path="131vivadosim_options")
 
+def test_radiant_132():
+    run_compare(path="132radiant")
+
 @pytest.mark.xfail
 def test_xfail():
     """This is a self-consistency test: the test is known to fail"""

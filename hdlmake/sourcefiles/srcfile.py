@@ -275,6 +275,10 @@ class RVAFile(File):
     """This is the class providing the Lattice Diamond Reveal Analyzer RVA file"""
     pass
 
+class STYFile(File):
+    """This is the class providing the Lattice Radiant Strategy file"""
+    pass
+
 #class SVFFile(File):
 #    """This is the class providing the Lattice Diamond Reveal Analyzer SVF file"""
 #    pass
@@ -290,7 +294,8 @@ LATTICE_FILE_DICT = {
     'ipx': IPXFile,
     'lpc': LPCFile,
     'rvl': RVLFile,
-    'rva': RVAFile}
+    'rva': RVAFile,
+    'sty': STYFile}
 
 
 # MICROSEMI/ACTEL FILES
