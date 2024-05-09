@@ -135,7 +135,9 @@ class ToolLiberoSoC(MakefileSyn):
         libraries = self.get_all_libs()
         if len(libraries) > 1:
           for libname in  libraries:
-            self.writeln('\t\t@echo add_library -library ' + libname + ' >> $@')
+            # Libero throws an error is work is added
+            if libname != 'work':
+                self.writeln('\t\t@echo add_library -library ' + libname + ' >> $@')
 
         # PROBABLY NAUGHTY:   as at this point we know what the device type is; let's also adjust the
         # TCL_CONTROLS[bitstream] so it is device appropriate
