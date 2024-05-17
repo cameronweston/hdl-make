@@ -34,6 +34,9 @@ files.tcl:
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 
 
+SYN_PRE_SYNTHESIZE_CMD := 
+SYN_POST_SYNTHESIZE_CMD := 
+
 SYN_PRE_BITSTREAM_CMD := 
 SYN_POST_BITSTREAM_CMD := 
 
@@ -51,6 +54,18 @@ project: files.tcl project.tcl
 	$(SYN_POST_PROJECT_CMD)
 	touch $@
 
+synthesize.tcl:
+		echo $(TCL_OPEN) >> $@
+		echo run_tool -name {SYNTHESIZE} >> $@
+		echo $(TCL_SAVE) >> $@
+		echo $(TCL_CLOSE) >> $@
+
+synthesize: project synthesize.tcl
+	$(SYN_PRE_SYNTHESIZE_CMD)
+	$(TCL_INTERPRETER)$@.tcl LOGFILE:synthesize_output.log
+	$(SYN_POST_SYNTHESIZE_CMD)
+	touch $@
+
 bitstream.tcl:
 		echo $(TCL_OPEN) >> $@
 		echo run_tool -name {GENERATEPROGRAMMINGDATA} >> $@
@@ -59,7 +74,7 @@ bitstream.tcl:
 		echo $(TCL_SAVE) >> $@
 		echo $(TCL_CLOSE) >> $@
 
-bitstream: project bitstream.tcl
+bitstream: synthesize bitstream.tcl
 	$(SYN_PRE_BITSTREAM_CMD)
 	$(TCL_INTERPRETER)$@.tcl LOGFILE:bitstream_output.log
 	$(SYN_POST_BITSTREAM_CMD)
@@ -69,8 +84,8 @@ CLEAN_TARGETS := $(LIBS) $(PROJECT) *.log
 
 clean:
 		rm -rf $(CLEAN_TARGETS)
-		rm -rf project bitstream
-		rm -rf project.tcl bitstream.tcl files.tcl
+		rm -rf project synthesize bitstream
+		rm -rf project.tcl synthesize.tcl bitstream.tcl files.tcl
 
 mrproper: clean
 		rm -rf *.pdb *.stp

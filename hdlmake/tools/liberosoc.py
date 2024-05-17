@@ -84,6 +84,10 @@ class ToolLiberoSoC(MakefileSyn):
                    '{0}\n'
                    '$(TCL_SAVE)\n'
                    '$(TCL_CLOSE)',
+        'synthesize':   '$(TCL_OPEN)\n'
+                        'run_tool -name {SYNTHESIZE}\n'
+                        '$(TCL_SAVE)\n'
+                        '$(TCL_CLOSE)',
         'bitstream': ' Device not supported, so no bitstream for now!',
         'install_source': '$(PROJECT)/designer/impl1/$(SYN_TOP).pdb'}
 
