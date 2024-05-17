@@ -69,6 +69,7 @@ class ToolRadiant(MakefileSyn):
                     'close': 'prj_close',
                     'project': '$(TCL_CREATE)\n'
                                'source files.tcl\n'
+                               'prj_set_impl_opt -impl impl1 top $(TOP_MODULE)\n'
                                '$(TCL_SAVE)\n'
                                '$(TCL_CLOSE)',
                     'par': '$(TCL_OPEN)\n'

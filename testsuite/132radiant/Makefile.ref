@@ -44,6 +44,7 @@ SYN_POST_BITSTREAM_CMD :=
 project.tcl:
 		echo $(TCL_CREATE) >> $@
 		echo source files.tcl >> $@
+		echo prj_set_impl_opt -impl impl1 top $(TOP_MODULE) >> $@
 		echo $(TCL_SAVE) >> $@
 		echo $(TCL_CLOSE) >> $@
 
