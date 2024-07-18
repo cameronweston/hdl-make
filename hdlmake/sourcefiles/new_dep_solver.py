@@ -202,10 +202,16 @@ def make_dependency_set(graph, fileset, top_library, top_entity, extra_modules=N
     rel = DepRelation(top_entity, top_library, DepRelation.MODULE)
     rel = graph.find_provider(rel)
     if rel is None:
+        if top_library == '?':
+            logging.warning(
+                'Experimental: Postpone finding top library, since top library is ?: '
+                'Top module: "%s.%s". Continuing with the full file set.',
+                top_library, top_entity)
+            return fileset
         logging.critical(
             'Could not find a top level file that provides the '
-            '"%s" top module. Continuing with the full file set.',
-            top_entity)
+            '"%s.%s" top module. Continuing with the full file set.',
+            top_library, top_entity)
         return fileset
     top_file = rel.provided_by
 

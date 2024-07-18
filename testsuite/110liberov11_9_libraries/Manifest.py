@@ -8,7 +8,7 @@ syn_device="anfpga"
 syn_grade="3"
 syn_package="ff"
 
-syn_top = "repinned_top"
+syn_top = "?.repinned_top"
 syn_project = "demo"
 
 

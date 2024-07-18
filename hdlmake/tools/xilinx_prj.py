@@ -35,8 +35,9 @@ class ToolXilinxProject:
 
     # Commands to be executed to complete the addition of a source file
     # in the project (like setting the library)
+    # Note: Ok to set_property LIBRARY work, previously done in vivado_sim. vivado(synth it was None, now work).
     _XILINX_VHDL_PROPERTY = (
-        lambda srcfile: "set_property LIBRARY {library} [get_files {srcfile}]" if srcfile.library is not None else "")
+        lambda srcfile: "set_property LIBRARY {library} [get_files {srcfile}]" if srcfile.library not in [None, "work"] else "")
 
     _XILINX_VERILOG_PROPERTY = ""
 

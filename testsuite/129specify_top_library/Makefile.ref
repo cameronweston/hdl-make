@@ -3,8 +3,8 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
-TOP_LIBRARY := work
-TOP_MODULE := gate
+TOP_LIBRARY := gatetop
+TOP_MODULE := gate6
 
 MODELSIM_INI_PATH := ../linux_fakebin/..
 
@@ -15,15 +15,17 @@ VMAP_FLAGS := -modelsimini modelsim.ini
 #target for performing local simulation
 local: sim_pre_cmd simulation sim_post_cmd
 
-VERILOG_SRC := vlog.v \
+VERILOG_SRC := 
+VERILOG_OBJ := 
+VHDL_SRC := ../files/gate.vhdl \
+../files/gate6.vhdl \
 
-VERILOG_OBJ := work/hdlmake/vlog_v \
+VHDL_OBJ := gatelib/hdlmake/gate_vhdl \
+gatetop/hdlmake/gate6_vhdl \
 
-VHDL_SRC := 
-VHDL_OBJ := 
 INCLUDE_DIRS :=
-LIBS := work
-LIB_IND := work/hdlmake/work-stamp
+LIBS := gatelib gatetop
+LIB_IND := gatelib/hdlmake/gatelib-stamp gatetop/hdlmake/gatetop-stamp
 
 simulation: modelsim.ini $(LIB_IND) $(VERILOG_OBJ) $(VHDL_OBJ)
 $(VERILOG_OBJ): modelsim.ini
@@ -32,11 +34,19 @@ $(VHDL_OBJ): $(LIB_IND) modelsim.ini
 modelsim.ini: $(MODELSIM_INI_PATH)/modelsim.ini
 		cp $< . 2>&1
 
-work/hdlmake/work-stamp:
-	(vlib work && vmap $(VMAP_FLAGS) work && mkdir -p work/hdlmake && touch work/hdlmake/work-stamp) || rm -rf work
+gatelib/hdlmake/gatelib-stamp:
+	(vlib gatelib && vmap $(VMAP_FLAGS) gatelib && mkdir -p gatelib/hdlmake && touch gatelib/hdlmake/gatelib-stamp) || rm -rf gatelib
 
-work/hdlmake/vlog_v: vlog.v
-		vlog -work work $(VLOG_FLAGS)  $(INCLUDE_DIRS) $<
+gatetop/hdlmake/gatetop-stamp:
+	(vlib gatetop && vmap $(VMAP_FLAGS) gatetop && mkdir -p gatetop/hdlmake && touch gatetop/hdlmake/gatetop-stamp) || rm -rf gatetop
+
+gatelib/hdlmake/gate_vhdl: ../files/gate.vhdl
+		vcom $(VCOM_FLAGS) -work gatelib $< 
+		@touch $@
+
+gatetop/hdlmake/gate6_vhdl: ../files/gate6.vhdl \
+gatelib/hdlmake/gate_vhdl
+		vcom $(VCOM_FLAGS) -work gatetop $< 
 		@touch $@
 
 # USER SIM COMMANDS

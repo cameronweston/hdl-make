@@ -5,6 +5,7 @@
 
 include .
 
+TOP_LIBRARY := work
 TOP_MODULE := gate
 
 MODELSIM_INI_PATH := ../linux_fakebin/..

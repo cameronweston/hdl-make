@@ -39,7 +39,7 @@ class ManifestParser(ConfigParser):
         general_options = [
             {'name': 'top_module',
              'default': None,
-             'help': "Top level HDL entity for synthesis and simulation",
+             'help': "Top level HDL entity for synthesis and simulation, if starts with dot, then library=value of library, else lib_name.entity_name or if no dot then library is work",
              'type': ''},
             {'name': 'extra_modules',
              'default': None,
@@ -130,7 +130,7 @@ class ManifestParser(ConfigParser):
              'type': ''},
             {'name': 'syn_top',
              'default': None,
-             'help': "Top level module for synthesis",
+             'help': "Top level module for synthesis. Optionally prefixed with library, see top_module",
              'type': ''},
             {'name': 'syn_project',
              'default': None,
@@ -212,7 +212,7 @@ class ManifestParser(ConfigParser):
         sim_options = [
             {'name': 'sim_top',
              'default': None,
-             'help': "Top level module for simulation",
+             'help': "Top level module for simulation. Optionally prefixed with library, see top_module",
              'type': ''},
             {'name': 'sim_tool',
              'default': None,

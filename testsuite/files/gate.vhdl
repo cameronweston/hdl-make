@@ -1,6 +1,6 @@
 entity gate is
-  port (o : out bit;
-        i : in bit);
+  port (i : in bit;
+        o : out bit);
 end gate;
 
 architecture behav of gate is

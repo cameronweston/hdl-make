@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := repinned_top
 PROJECT := hdlmake
 PROJECT_FILE := $(PROJECT).xise

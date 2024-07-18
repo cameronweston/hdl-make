@@ -4,6 +4,7 @@
 ########################################
 
 ## variables #############################
+TOP_LIBRARY := work
 TOP_MODULE := gate3_tb
 FUSE_OUTPUT ?= isim_proj
 
@@ -34,7 +35,7 @@ $(VHDL_OBJ): $(LIB_IND) xilinxsim.ini
 xilinxsim.ini: $(XILINX_INI_PATH)\xilinxsim.ini
 		copy $< .
 fuse:
-		fuse work.$(TOP_MODULE) -intstyle ise -incremental -o $(FUSE_OUTPUT)
+		fuse $(TOP_LIBRARY).$(TOP_MODULE) -intstyle ise -incremental -o $(FUSE_OUTPUT)
 
 
 work\.work:

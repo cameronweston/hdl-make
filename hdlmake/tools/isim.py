@@ -83,7 +83,8 @@ class ToolISim(MakefileSim):
             # Ensure the path is absolute and normalized
             return os.path.abspath(xilinx_ini_path)
         self.writeln("## variables #############################")
-        self.writeln("TOP_MODULE := {}".format(self.manifest_dict.get("sim_top", '')))
+        self.writeln("TOP_LIBRARY := {}".format(self.get_top_library()))
+        self.writeln("TOP_MODULE := {}".format(self.get_top_module()))
         self.writeln("FUSE_OUTPUT ?= isim_proj")
         self.writeln()
         self.writeln("XILINX_INI_PATH := {}".format(__get_xilinxsim_ini_dir()))
@@ -161,7 +162,7 @@ $(VHDL_OBJ): $(LIB_IND) xilinxsim.ini
         self.writeln("\t\t" + shell.copy_command() + " $< .")
         self.writeln("""\
 fuse:
-\t\tfuse work.$(TOP_MODULE) -intstyle ise -incremental -o $(FUSE_OUTPUT)
+\t\tfuse $(TOP_LIBRARY).$(TOP_MODULE) -intstyle ise -incremental -o $(FUSE_OUTPUT)
 
 """)
         self._makefile_sim_libraries(libs)

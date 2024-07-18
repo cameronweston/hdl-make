@@ -4,7 +4,7 @@ from __future__ import absolute_import
 import os, sys
 import logging
 
-from .makefile import ToolMakefile
+from .makefilesyn import MakefileSyn
 from ..util import shell
 
 from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile
@@ -18,7 +18,7 @@ def _check_synthesis_manifest(top_manifest):
                 "'{}' variable must be set in the top manifest.".format(v))
 
 
-class GhdlSyn(ToolMakefile):
+class GhdlSyn(MakefileSyn):
 
     """Class that provides the synthesis Makefile writing methods and status"""
 
@@ -38,7 +38,6 @@ class GhdlSyn(ToolMakefile):
     def __init__(self):
         super(GhdlSyn, self).__init__()
         self._tcl_controls = {}
-        self.default_library = "work"
 
     def write_makefile(self, top_manifest, fileset, filename=None):
         """Generate a Makefile for the specific synthesis tool"""
@@ -57,7 +56,8 @@ class GhdlSyn(ToolMakefile):
 
     def _makefile_syn_top(self):
         """Create the top part of the synthesis Makefile"""
-        self.writeln("TOP_MODULE := {}".format(self.manifest_dict["syn_top"]))
+        self.writeln("TOP_LIBRARY := {}".format(self.get_top_library()))
+        self.writeln("TOP_MODULE := {}".format(self.get_top_module()))
         self.writeln("TOOL_PATH := {}".format(self.manifest_dict["syn_path"]))
         self.writeln("GHDL := ghdl")
         self.writeln("GHDL_OPT := {}".format(self.manifest_dict.get("ghdl_opt", '')))
@@ -117,7 +117,7 @@ class GhdlSyn(ToolMakefile):
         # HOW to set a file to write the synthesis result into.... 
         self.writeln("""\
 synthesis: files.tcl
-\t$(GHDL) --synth $(GHDL_OPT) @files.tcl -e $(TOP_MODULE)
+\t$(GHDL) --synth $(GHDL_OPT) @files.tcl -e $(TOP_LIBRARY).$(TOP_MODULE)
 """)
 
     def _makefile_syn_clean(self):

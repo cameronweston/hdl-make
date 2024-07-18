@@ -211,11 +211,9 @@ class ToolLiberoSoC(MakefileSyn):
         timing_constraints = []
         ret = []
 
-        library_for_top_module = str(self.get_library_for_top_module())
-
         libraries = self.get_all_libs()
         if len(libraries) > 1:
-           line = 'set_root -module {$(TOP_MODULE)::' + library_for_top_module + '}'
+           line = 'set_root -module {$(TOP_MODULE)::$(TOP_LIBRARY)}'
         else:
            line = 'set_root -module {$(TOP_MODULE)}'
         ret.append(line)
@@ -235,7 +233,7 @@ class ToolLiberoSoC(MakefileSyn):
             for file_aux in synthesis_constraints:
                 line = line + '-file {' + file_aux.rel_path() + '} '
             line = line + \
-                '-module {$(TOP_MODULE)::' + library_for_top_module + '} -input_type {constraint} '
+                '-module {$(TOP_MODULE)::$(TOP_LIBRARY)} -input_type {constraint} '
             ret.append(line)
         # Third stage: Organizing / activating compilation constraints (the top
         # module needs to be present!)
@@ -244,7 +242,7 @@ class ToolLiberoSoC(MakefileSyn):
             for file_aux in compilation_constraints:
                 line = line + '-file {' + file_aux.rel_path() + '} '
             line = line + \
-                '-module {$(TOP_MODULE)::' + library_for_top_module + '} -input_type {constraint} '
+                '-module {$(TOP_MODULE)::$(TOP_LIBRARY)} -input_type {constraint} '
             ret.append(line)
 
         # is this device dependant?
@@ -253,7 +251,7 @@ class ToolLiberoSoC(MakefileSyn):
             for file_aux in timing_constraints:
                 line = line + '-file {' + file_aux.rel_path() + '} '
             line = line + \
-                '-module {$(TOP_MODULE)::' + library_for_top_module + '} -input_type {constraint} '
+                '-module {$(TOP_MODULE)::$(TOP_LIBRARY)} -input_type {constraint} '
             ret.append(line)
 
         # Source extra tcl files

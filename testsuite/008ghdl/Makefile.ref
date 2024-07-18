@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := gate3
 
 GHDL := ghdl
@@ -23,7 +24,7 @@ LIBS := work
 LIB_IND := work/.work
 
 simulation: $(VERILOG_OBJ) $(VHDL_OBJ)
-		$(GHDL) -e $(GHDL_OPT) $(TOP_MODULE)
+		$(GHDL) -e $(GHDL_OPT) $(TOP_LIBRARY).$(TOP_MODULE)
 
 
 work/gate/.gate_vhdl: ../files/gate.vhdl

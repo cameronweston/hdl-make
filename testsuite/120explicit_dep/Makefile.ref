@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := gate3
 PROJECT := gate3
 PROJECT_FILE := $(PROJECT).xise

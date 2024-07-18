@@ -49,7 +49,7 @@ class ToolGHDL(MakefileSim):
 
     SIMULATOR_CONTROLS = {'vlog': None,
                           'vhdl': '$(GHDL) -a --work={work} $(GHDL_OPT) $<',
-                          'compiler': '$(GHDL) -e $(GHDL_OPT) $(TOP_MODULE)'}
+                          'compiler': '$(GHDL) -e $(GHDL_OPT) $(TOP_LIBRARY).$(TOP_MODULE)'}
 
     def __init__(self):
         super(ToolGHDL, self).__init__()

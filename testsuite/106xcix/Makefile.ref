@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := xcix_test
 PROJECT := xcix_test
 PROJECT_FILE := $(PROJECT).xpr

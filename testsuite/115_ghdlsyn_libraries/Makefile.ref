@@ -3,7 +3,8 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
-TOP_MODULE := lib_c.repinned_top
+TOP_LIBRARY := lib_c
+TOP_MODULE := repinned_top
 GHDL := ghdl
 GHDL_OPT := 
 #target for performing local synthesis
@@ -21,7 +22,7 @@ files.tcl:
 		@echo --work=lib_c ../113_ise_libraries/rtl/lib_c/repinned_top.vhd >> $@
 
 synthesis: files.tcl
-	$(GHDL) --synth $(GHDL_OPT) @files.tcl -e $(TOP_MODULE)
+	$(GHDL) --synth $(GHDL_OPT) @files.tcl -e $(TOP_LIBRARY).$(TOP_MODULE)
 
 CLEAN_TARGETS := $(LIBS) files.tcl *.vhd
 

@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := gate
 PROJECT := gate
 PROJECT_FILE := $(PROJECT).prjx
@@ -42,9 +43,9 @@ SYN_POST_BITSTREAM_CMD :=
 project.tcl:
 		echo $(TCL_CREATE) >> $@
 		echo source files.tcl >> $@
-		echo organize_tool_files -tool {SYNTHESIZE} -file {syn.sdc} -module {$(TOP_MODULE)::work} -input_type {constraint} >> $@
-		echo organize_tool_files -tool {COMPILE} -file {comp.pdc} -file {syn.sdc} -module {$(TOP_MODULE)::work} -input_type {constraint} >> $@
-		echo set_root -module {$(TOP_MODULE)} >> $@
+		echo organize_tool_files -tool {SYNTHESIZE} -file {syn.sdc} -module {$(TOP_MODULE)::$(TOP_LIBRARY)} -input_type {constraint} >> $@
+		echo organize_tool_files -tool {COMPILE} -file {comp.pdc} -file {syn.sdc} -module {$(TOP_MODULE)::$(TOP_LIBRARY)} -input_type {constraint} >> $@
+		echo set_root -module {$(TOP_MODULE)::$(TOP_LIBRARY)} >> $@
 		echo $(TCL_SAVE) >> $@
 		echo $(TCL_CLOSE) >> $@
 

@@ -71,7 +71,6 @@ $(TCL_CLOSE)'''
     def __init__(self):
         super(ToolXilinx, self).__init__()
         self._tcl_controls.update(ToolXilinx.TCL_CONTROLS)
-        self.default_library = None
 
     def _get_properties(self):
         """Create the property list"""

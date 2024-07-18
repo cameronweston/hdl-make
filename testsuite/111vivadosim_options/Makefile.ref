@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := gate3_tb
 
 XVHDL_OPT := -2008
@@ -52,8 +53,6 @@ project.tcl: Makefile
 	@echo '../files/gate3.vhd' >> $@
 	@echo '../files/gate3_tb.v' >> $@
 	@echo '}' >> $@
-	@echo 'set_property LIBRARY work [get_files ../files/gate.vhdl]' >> $@
-	@echo 'set_property LIBRARY work [get_files ../files/gate3.vhd]' >> $@
 	@echo "exit" >> $@
 
 project: project.tcl

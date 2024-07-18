@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := lib_c
 TOP_MODULE := repinned_top
 PROJECT := demo
 PROJECT_FILE := $(PROJECT).prjx
@@ -62,7 +63,7 @@ project.tcl:
 		echo $(TCL_CREATE) >> $@
 		echo source files.tcl >> $@
 		echo refresh >> $@
-		echo set_root -module {$(TOP_MODULE)::lib_c} >> $@
+		echo set_root -module {$(TOP_MODULE)::$(TOP_LIBRARY)} >> $@
 		echo $(TCL_SAVE) >> $@
 		echo $(TCL_CLOSE) >> $@
 

@@ -6,6 +6,7 @@
 include a.mk
 include b.mk
 
+TOP_LIBRARY := work
 TOP_MODULE := gate
 
 MODELSIM_INI_PATH := ../linux_fakebin/..

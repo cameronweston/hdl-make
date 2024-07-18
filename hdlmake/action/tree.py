@@ -104,8 +104,8 @@ class ActionTree(Action):
                     top_id = path.relpath(chk_file.path)
             if top_file is None:
                 logging.critical('Could not find a top level file that provides the '
-                                 'top_module="%s". Continuing with the full file set.',
-                                 self.cmd.top_entity)
+                                 'top_module="%s.%s". Continuing with the full file set.',
+                                 self.cmd.top_library, self.cmd.top_entity)
 
         else:
             raise Exception('Unknown tree mode: %s', self.options.mode)

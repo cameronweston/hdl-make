@@ -3,6 +3,7 @@
 #  http://ohwr.org/projects/hdl-make/  #
 ########################################
 
+TOP_LIBRARY := work
 TOP_MODULE := gate2
 PROJECT := gate2
 PROJECT_FILE := $(PROJECT).

@@ -7,7 +7,7 @@ syn_device = "M2GL025"
 syn_grade = "-1"
 syn_package = "484 FBGA"
 
-syn_top = "repinned_top"
+syn_top = "?.repinned_top"
 syn_project = "demo"
 
 

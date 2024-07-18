@@ -5,6 +5,7 @@
 
 extra_line: makefile differs...
 
+TOP_LIBRARY := work
 TOP_MODULE := gate
 PROJECT := gate
 PROJECT_FILE := $(PROJECT).xise

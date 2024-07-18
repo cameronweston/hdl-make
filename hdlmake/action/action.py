@@ -82,6 +82,36 @@ class Action(object):
         # Parse the top manifest and all sub-modules.
         self.top_manifest.parse_manifest()
 
+    def split_to_top_lib_and_entity(self):
+        # If '.' included in top_entity:
+        # Split top at first . Before . -> top_library, after . -> top_entity
+        try:
+            self.top_entity
+        except NameError:
+            return
+        if not self.top_entity:
+            self.top_library = None
+            return
+        if self.top_entity.startswith('.'):
+            if self.top_manifest.manifest_dict.get("library", None) is None:
+                logging.critical(
+                    '''library must be specified in top-level Manifest.py since '''
+                    '''top module = '%s' (starts with .)''' % (self.top_entity))
+            self.top_library = self.top_manifest.manifest_dict['library']
+            self.top_entity = self.top_entity[1:]
+            return
+        if self.top_entity.startswith('?.'):
+            self.top_library = '?'
+            self.top_entity = self.top_entity[2:]
+            return
+        if '.' in self.top_entity:
+            _ = self.top_entity.split('.')
+            self.top_library = _[0]
+            self.top_entity = '.'.join(_[1:])
+            return
+        # Default, don't change self.top_library and self.top_module
+        return
+
     def setup(self):
         """Set tool and top_entity"""
         top_dict = self.top_manifest.manifest_dict
@@ -90,6 +120,7 @@ class Action(object):
         if action == None:
             self.tool = None
             self.top_entity = top_dict.get("top_module")
+            self.split_to_top_lib_and_entity()
         elif action == "simulation":
             tool = top_dict.get("sim_tool")
             if tool is None:
@@ -97,6 +128,8 @@ class Action(object):
             self.tool = load_sim_tool(tool)
             self.top_entity = top_dict.get("sim_top") \
                 or top_dict.get("top_module")
+            self.split_to_top_lib_and_entity()
+            top_dict["sim_top_library"] = self.top_library
             top_dict["sim_top"] = self.top_entity
         elif action == "synthesis":
             tool = top_dict.get("syn_tool")
@@ -105,12 +138,15 @@ class Action(object):
             self.tool = load_syn_tool(tool)
             self.top_entity = top_dict.get("syn_top") \
                 or top_dict.get("top_module")
+            self.split_to_top_lib_and_entity()
+            top_dict["syn_top_library"] = self.top_library
             top_dict["syn_top"] = self.top_entity
             deflib = self.tool.default_library
         else:
             raise Exception("Unknown requested action: {}".format(action))
         # Set default library
-        self.top_library = deflib
+        if self.top_library is None:
+            self.top_library = deflib
         if deflib:
             for mod in self.all_manifests:
                 if mod.files is not None and mod.library is None:

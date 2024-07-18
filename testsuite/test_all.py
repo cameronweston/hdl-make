@@ -603,17 +603,26 @@ def test_package_body_in_separate_file_126():
 def test_arch_in_separate_file_127():
     run_compare(path="127arch_in_separate_file")
 
-def test_libero_options_129():
-    run_compare(path="129libero_options")
+def test_libero_options_109():
+    run_compare(path="109libero_options")
 
-def test_libero_libraries_130():
-    run_compare(path="130liberov11_9_libraries")
+def test_libero_libraries_110():
+    run_compare(path="110liberov11_9_libraries")
 
-def test_vivado_sim_options_131():
-    run_compare(path="131vivadosim_options")
+def test_vivado_sim_options_111():
+    run_compare(path="111vivadosim_options")
 
-def test_radiant_132():
-    run_compare(path="132radiant")
+def test_radiant_112():
+    run_compare(path="112radiant")
+
+def test_nvc_128():
+    run_compare(path="128nvc")
+
+def test_specify_top_library_129():
+    run_compare(path="129specify_top_library")
+
+def test_specify_top_library_explict_130():
+    run_compare(path="130specify_top_library_explicit")
 
 @pytest.mark.xfail
 def test_xfail():
