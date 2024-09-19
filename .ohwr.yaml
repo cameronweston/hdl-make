@@ -1,0 +1,13 @@
+---
+# SPDX-FileCopyrightText: 2024 CERN (home.cern)
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+version: '1.0.0'
+name: 'Hdlmake'
+description: 'https://ohwr.org/project/hdl-make/wikis/home'
+website: 'https://ohwr.org/project/hdl-make'
+documentation: 'https://ohwr.org/project/hdl-make/wikis'
+issues: 'https://ohwr.org/project/hdl-make/issues'
+newsfeed: 'https://ohwr.org/project/hdl-make/wikis/news'
+
