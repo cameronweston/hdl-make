@@ -119,8 +119,6 @@ Supported Tools
 +--------------------------+-----------+------------+
 | Lattice Semi. Diamond    | Yes       | n.a.       |
 +--------------------------+-----------+------------+
-| Lattice Semi. Radiant    | Yes       | n.a.       |
-+--------------------------+-----------+------------+
 | Xilinx ISim              | n.a.      | Yes        |
 +--------------------------+-----------+------------+
 | Mentor Graphics Modelsim | n.a.      | Yes        |
@@ -505,9 +503,6 @@ The following common top specific Manifest variables describes the simulation:
 - ``action``: indicates that we are going to perform a simulation.
 - ``sim_tool``: indicates that modelsim is going to be the simulation we are going to use.
 - ``sim_top``: indicates the name of the top HDL entity/instance that is going to be simulated.
-  - If ``sim_top`` has no ``.``: Then sim_top is ``work.<sim_top>``
-  - If ``sim_top`` starts with ``.``, then sim_top is ``library.sim_top``
-  - If ``sim_top`` has a ``.``: ``<library name>.<sim_top entity>``, then ``sim_top`` is ``<library name>.<sim_top entity>``
 - ``sim_post_cmd``: indicates a command that must be issued after the simulation process has finnished.
 
 Now, if we want to launch the simulation, we must follow the next steps. First, get into the folder containing the top Manifest.py we want to execute and run ``hdlmake`` without arguments. e.g. for VHDL:
@@ -676,9 +671,6 @@ We can see that the only difference is that each of the top synthesis Manifest.p
 - ``syn_grade``: indicates the specific FPGA speed grade
 - ``syn_package``: indicates the specific FPGA package
 - ``syn_top``: indicates the name of the top HDL instance/module to be synthesized.
-  - If ``syn_top`` has no ``.``: Then syn_top is ``work.<syn_top>``
-  - If ``syn_top`` starts with ``.``, then syn_top is ``library.syn_top``
-  - If ``syn_top`` has a ``.``: ``<library name>.<syn_top entity>``, then ``syn_top`` is ``<library name>.<syn_top entity>``
 - ``syn_project``: indicates the name of the FPGA project that is going to be created.
 - ``syn_tool``: indicates the specific synthesis tool that is going to be used.
 
@@ -1499,7 +1491,7 @@ Basic simulation variables:
 +----------------+--------------+-----------------------------------------------------------------+-----------+
 | Name           | Type         | Description                                                     | Default   |
 +================+==============+=================================================================+===========+
-| sim_top        | str          | Top level module for simulation (see note)                      | None      |
+| sim_top        | str          | Top level module for simulation                                 | None      |
 +----------------+--------------+-----------------------------------------------------------------+-----------+
 | sim_tool       | str          | Simulation tool to be used (e.g. isim, vsim, iverilog)          | None      |
 +----------------+--------------+-----------------------------------------------------------------+-----------+
@@ -1507,13 +1499,6 @@ Basic simulation variables:
 +----------------+--------------+-----------------------------------------------------------------+-----------+
 | sim_post_cmd   | str          | Command to be executed after simulation                         | None      |
 +----------------+--------------+-----------------------------------------------------------------+-----------+
-
-Notes:
-
-- ``sim_top``:
-  - If ``sim_top`` has no ``.``: Then sim_top is ``work.<sim_top>``
-  - If ``sim_top`` starts with ``.``, then sim_top is ``library.sim_top``
-  - If ``sim_top`` has a ``.``: ``<library name>.<sim_top entity>``, then ``sim_top`` is ``<library name>.<sim_top entity>``
 
 
 Modelsim/VSim specific variables:
@@ -1562,15 +1547,6 @@ NVC specific variables:
 | nvc_elab_opt     | str          | Additional elaboration options for nvc                          | ""        |
 +------------------+--------------+-----------------------------------------------------------------+-----------+
 
-Vivado Sim specific variables:
-
-+----------------+--------------+-----------------------------------------------------------------+-----------+
-| Name           | Type         | Description                                                     | Default   |
-+================+==============+=================================================================+===========+
-| xvhdl_opt      | str          | Additional options for vhdl compilation                         | ""        |
-+----------------+--------------+-----------------------------------------------------------------+-----------+
-| xvlog_opt      | str          | Additional options for verilog compilation                      | ""        |
-+----------------+--------------+-----------------------------------------------------------------+-----------+
 
 Synthesis variables
 -------------------
@@ -1581,7 +1557,7 @@ Basic synthesis variables:
 +--------------------------+-------------+-----------------------------------------------------------------+-----------+
 | Name                     | Type        | Description                                                     | Default   |
 +==========================+=============+=================================================================+===========+
-| syn_top                  | str         | Top level module for synthesis (see note)                       | None      |
+| syn_top                  | str         | Top level module for synthesis                                  | None      |
 +--------------------------+-------------+-----------------------------------------------------------------+-----------+
 | syn_tool                 | str         | Tool to be used in the synthesis                                | None      |
 +--------------------------+-------------+-----------------------------------------------------------------+-----------+
@@ -1616,13 +1592,6 @@ Basic synthesis variables:
 | syn_post_bitstream_cmd   | str         | Command to be executed after synthesis: bitstream               | ''        |
 +--------------------------+-------------+-----------------------------------------------------------------+-----------+
 
-Notes:
-
-- ``syn_top``:
-  - If ``syn_top`` has no ``.``: Then syn_top is ``work.<syn_top>``
-  - If ``syn_top`` starts with ``.``, then syn_top is ``library.syn_top``
-  - If ``syn_top`` has a ``.``: ``<library name>.<syn_top entity>``, then ``syn_top`` is ``<library name>.<syn_top entity>``
-
 
 Altera Quartus II / Prime specific variables:
 
@@ -1636,21 +1605,14 @@ Altera Quartus II / Prime specific variables:
 | quartus_postflow   | str      | Quartus post-flow script file                                   | None      |
 +--------------------+----------+-----------------------------------------------------------------+-----------+
 
-Libero / Libero SoC specific variables:
+Vivado specific variables:
 
 +--------------------+----------+-----------------------------------------------------------------+-----------+
 | Name               | Type     | Description                                                     | Default   |
 +====================+==========+=================================================================+===========+
-| project_opt        | str      | Libero project options                                          | None      |
+| src_properites     | dict     | Sets the properites for the imported source file                | None      |
 +--------------------+----------+-----------------------------------------------------------------+-----------+
 
-Radiant specific variables:
-
-+--------------------+----------+-----------------------------------------------------------------+-----------+
-| Name               | Type     | Description                                                     | Default   |
-+====================+==========+=================================================================+===========+
-| strategy_opt       | str      | Changes settings in strategy file                               | None      |
-+--------------------+----------+-----------------------------------------------------------------+-----------+
 
 .. _args:
 

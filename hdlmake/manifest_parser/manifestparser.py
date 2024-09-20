@@ -39,7 +39,7 @@ class ManifestParser(ConfigParser):
         general_options = [
             {'name': 'top_module',
              'default': None,
-             'help': "Top level HDL entity for synthesis and simulation, if starts with dot, then library=value of library, else lib_name.entity_name or if no dot then library is work",
+             'help': "Top level HDL entity for synthesis and simulation",
              'type': ''},
             {'name': 'extra_modules',
              'default': None,
@@ -130,7 +130,7 @@ class ManifestParser(ConfigParser):
              'type': ''},
             {'name': 'syn_top',
              'default': None,
-             'help': "Top level module for synthesis. Optionally prefixed with library, see top_module",
+             'help': "Top level module for synthesis",
              'type': ''},
             {'name': 'syn_project',
              'default': None,
@@ -212,7 +212,7 @@ class ManifestParser(ConfigParser):
         sim_options = [
             {'name': 'sim_top',
              'default': None,
-             'help': "Top level module for simulation. Optionally prefixed with library, see top_module",
+             'help': "Top level module for simulation",
              'type': ''},
             {'name': 'sim_tool',
              'default': None,
@@ -278,6 +278,16 @@ class ManifestParser(ConfigParser):
              'type': ''}]
         self.add_option_list(vivado_sim_options)
         self.add_delimiter()
+        vivado_options = [
+            {'name': 'src_properties',
+             'default': "",
+             'help': "Specifies properties to be added to the source file",
+             'type': {}}]
+        self.add_option_list(vivado_options)
+        self.add_delimiter()
+        self.add_allowed_key('src_properties', key="vhdl")
+        self.add_allowed_key('src_properties', key="tcl")
+        self.add_allowed_key('src_properties', key="verilog")
 
     def add_option_list(self, option_list):
         """Add to the parser a list with the options and their keys"""
