@@ -38,7 +38,8 @@ class ToolXilinxProject:
     _XILINX_VHDL_PROPERTY = (
         lambda property_str: 'set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else '')
 
-    _XILINX_VERILOG_PROPERTY = ""
+    _XILINX_VERILOG_PROPERTY = (
+        lambda property_str: 'set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else '')
 
     _XILINX_TCL_PROPERTY = (
         lambda property_str: 'source {srcfile}; set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else 'source {srcfile}')
