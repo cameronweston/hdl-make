@@ -35,14 +35,11 @@ class ToolXilinxProject:
 
     # Commands to be executed to complete the addition of a source file
     # in the project (like setting the library)
+    # Note: Ok to set_property LIBRARY work, previously done in vivado_sim. vivado(synth it was None, now work).
     _XILINX_VHDL_PROPERTY = (
-        lambda property_str: 'set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else '')
+        lambda srcfile: "set_property LIBRARY {library} [get_files {srcfile}]" if srcfile.library not in [None, "work"] else "")
 
-    _XILINX_VERILOG_PROPERTY = (
-        lambda property_str: 'set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else '')
-
-    _XILINX_TCL_PROPERTY = (
-        lambda property_str: 'source {srcfile}; set_property -dict "{property_str}" [get_files {srcfile}]' if property_str is not "" else 'source {srcfile}')
+    _XILINX_VERILOG_PROPERTY = ""
 
     # Dictionnary of commands per file type.
     HDL_FILES = {
@@ -52,7 +49,7 @@ class ToolXilinxProject:
     }
 
     SUPPORTED_FILES = {
-        TCLFile: _XILINX_TCL_PROPERTY
+        TCLFile: 'source {srcfile}'
     }
 
     def write_commands_project(self):
@@ -69,11 +66,8 @@ class ToolXilinxProject:
                 self.writeln("\t@echo '{}' >> $@".format(
                     shell.tclpath(srcfile.rel_path())))
         self.writeln("\t@echo '}' >> $@")
-        # Grab vhdl version info
-        src_properties = self.manifest_dict.get('src_properties', [])
         # Add per file properties (like library)
         for srcfile in self.fileset.sort():
-            property_str = ""
             command = fileset_dict.get(type(srcfile))
             # Put the file in files.tcl only if it is supported.
             if command is not None:
@@ -81,20 +75,11 @@ class ToolXilinxProject:
                 # Libraries are defined only for hdl files.
                 if isinstance(srcfile, SourceFile):
                     library = srcfile.library
-                    property_str = f"LIBRARY {library}" if library not in [None, "work"] else ""
                 else:
                     library = None
-                # Handle vhdl specific properties
-                if isinstance(srcfile, VHDLFile):
-                    property_str += f" {src_properties['vhdl']}" if 'vhdl' in src_properties else ""
-                elif isinstance(srcfile, VerilogFile):
-                    property_str += f" {src_properties['verilog']}" if 'verilog' in src_properties else ""
-                elif isinstance(srcfile, TCLFile):
-                    property_str += f" {src_properties['tcl']}" if 'tcl' in src_properties else ""
-
                 if callable(command):
-                    command = command(property_str)
+                    command = command(srcfile)
                 cmd = command.format(srcfile=shell.tclpath(srcfile.rel_path()),
-                                     property_str=property_str)
+                                     library=library)
                 if cmd:
                     self.writeln("\t@echo '{}' >> $@".format(cmd))

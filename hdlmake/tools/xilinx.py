@@ -50,7 +50,7 @@ set timing [string match \\"*Failed Timing*\\" '$$'result]
 if {{ ! '$$'complete }} {{
     exit 1
 }}
-if {{ '$$'timing '&&' {fail_on_timing} }} {{
+if {{ '$$'timing '&' {fail_on_timing} }} {{
     exit 1
 }}
 $(TCL_CLOSE)'''
@@ -61,6 +61,7 @@ $(TCL_CLOSE)'''
                     'project': '$(TCL_CREATE)\n'
                                '{0}\n'
                                'source files.tcl\n'
+                               '{1}\n'
                                'update_compile_order -fileset sources_1\n'
                                'update_compile_order -fileset sim_1\n'
                                '$(TCL_CLOSE)',
@@ -74,7 +75,6 @@ $(TCL_CLOSE)'''
 
     def _get_properties(self):
         """Create the property list"""
-        syn_properties = self.manifest_dict.get("syn_properties")
         language = self.manifest_dict.get("language")
         if language == None:
             language = "vhdl"
@@ -87,8 +87,6 @@ $(TCL_CLOSE)'''
         fetchto = self.manifest_dict.get("fetchto")
         if not fetchto is None:
             properties.append(['ip_repo_paths', fetchto, 'current_fileset'])
-        if not syn_properties is None:
-            properties.extend(syn_properties)
         return properties
 
     def _makefile_syn_files(self):
@@ -102,13 +100,15 @@ $(TCL_CLOSE)'''
 
     def _makefile_syn_tcl(self):
         """Create a Xilinx synthesis project by TCL"""
-        prop_val = 'set_property "{0}" "{1}" [{2}]'
+        prop_val = 'set_property {0} {1} [{2}]'
         prop_opt = 'set_property -name {{{0}}} -value {{{1}}} -objects [{2}]'
         project_new = ['# project properties']
+        project_prop = []
         synthesize_new = ['# synthesize properties']
         par_new = ['# par properties']
         properties = self._get_properties()
-        for prop in properties:
+        syn_properties = self.manifest_dict.get("syn_properties", [])
+        for prop in syn_properties:
             if len(prop) > 1:
                 tmp = prop_val
                 name_list = prop[0].split()
@@ -133,12 +133,17 @@ $(TCL_CLOSE)'''
                     project_new.append(tmp.format(prop[0], prop[1], prop[2]))
                 else:
                     logging.error('Unknown project property: %s', prop[0])
+        for prop in properties:
+            if len(prop) == 3:
+                tmp = prop_val
+                project_prop.append(tmp.format(prop[0], prop[1], prop[2]))
         fail_on_timing = int(self.manifest_dict.get("syn_fail_on_timing", True))
         tmp_dict = {}
         tmp_dict["project"] = self._tcl_controls["project"]
         tmp_dict["synthesize"] = self._tcl_controls["synthesize"]
         tmp_dict["par"] = self._tcl_controls["par"]
         self._tcl_controls["project"] = tmp_dict["project"].format(
+            "\n".join(project_prop),
             "\n".join(project_new))
         self._tcl_controls["synthesize"] = tmp_dict["synthesize"].format(
             "synth_1",

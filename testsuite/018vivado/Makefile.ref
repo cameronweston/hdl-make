@@ -47,11 +47,11 @@ SYN_POST_BITSTREAM_CMD :=
 
 project.tcl:
 		echo $(TCL_CREATE) >> $@
-		echo # project properties >> $@
-		echo set_property "part" "$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)" [current_project] >> $@
-		echo set_property "target_language" "vhdl" [current_project] >> $@
-		echo set_property "top" "$(TOP_MODULE)" [get_property srcset [current_run]] >> $@
+		echo set_property part $(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE) [current_project] >> $@
+		echo set_property target_language vhdl [current_project] >> $@
+		echo set_property top $(TOP_MODULE) [get_property srcset [current_run]] >> $@
 		echo source files.tcl >> $@
+		echo # project properties >> $@
 		echo update_compile_order -fileset sources_1 >> $@
 		echo update_compile_order -fileset sim_1 >> $@
 		echo $(TCL_CLOSE) >> $@
@@ -74,7 +74,7 @@ synthesize.tcl:
 		echo if { ! '$$'complete } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
-		echo if { '$$'timing '&&' 1 } { >> $@
+		echo if { '$$'timing '&' 1 } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@
@@ -97,7 +97,7 @@ par.tcl:
 		echo if { ! '$$'complete } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
-		echo if { '$$'timing '&&' 1 } { >> $@
+		echo if { '$$'timing '&' 1 } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@

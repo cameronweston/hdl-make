@@ -624,9 +624,6 @@ def test_specify_top_library_129():
 def test_specify_top_library_explict_130():
     run_compare(path="130specify_top_library_explicit")
 
-def test_vivado_src_prop_131():
-    run_compare(path="131vivado_src_properties")
-
 @pytest.mark.xfail
 def test_xfail():
     """This is a self-consistency test: the test is known to fail"""

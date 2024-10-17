@@ -47,15 +47,15 @@ SYN_POST_BITSTREAM_CMD :=
 
 project.tcl:
 		echo $(TCL_CREATE) >> $@
-		echo # project properties >> $@
-		echo set_property "part" "$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)" [current_project] >> $@
-		echo set_property "target_language" "vhdl" [current_project] >> $@
-		echo set_property "top" "$(TOP_MODULE)" [get_property srcset [current_run]] >> $@
-		echo set_property "ip_repo_paths" "." [current_fileset] >> $@
-		echo set_property "prop1" "val1obj" [current_project] >> $@
-		echo set_property -name {prop3 options} -value {obj} -objects [current_project] >> $@
-		echo set_property "prop4 err" "obj" [current_project] >> $@
+		echo set_property part $(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE) [current_project] >> $@
+		echo set_property target_language vhdl [current_project] >> $@
+		echo set_property top $(TOP_MODULE) [get_property srcset [current_run]] >> $@
+		echo set_property ip_repo_paths . [current_fileset] >> $@
 		echo source files.tcl >> $@
+		echo # project properties >> $@
+		echo set_property prop1 val1obj [current_project] >> $@
+		echo set_property -name {prop3 options} -value {obj} -objects [current_project] >> $@
+		echo set_property prop4 err obj [current_project] >> $@
 		echo update_compile_order -fileset sources_1 >> $@
 		echo update_compile_order -fileset sim_1 >> $@
 		echo $(TCL_CLOSE) >> $@
@@ -69,7 +69,7 @@ project: files.tcl project.tcl
 synthesize.tcl:
 		echo $(TCL_OPEN) >> $@
 		echo # synthesize properties >> $@
-		echo set_property "steps.synth_design" "2" [get_runs synth_1] >> $@
+		echo set_property steps.synth_design 2 [get_runs synth_1] >> $@
 		echo reset_run synth_1 >> $@
 		echo launch_runs synth_1 >> $@
 		echo wait_on_run synth_1 >> $@
@@ -79,7 +79,7 @@ synthesize.tcl:
 		echo if { ! '$$'complete } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
-		echo if { '$$'timing '&&' 1 } { >> $@
+		echo if { '$$'timing '&' 1 } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@
@@ -93,7 +93,7 @@ synthesize: project synthesize.tcl ../files/gate.vhdl
 par.tcl:
 		echo $(TCL_OPEN) >> $@
 		echo # par properties >> $@
-		echo set_property "steps.impl" "3" [get_runs impl_1] >> $@
+		echo set_property steps.impl 3 [get_runs impl_1] >> $@
 		echo reset_run impl_1 >> $@
 		echo launch_runs impl_1 >> $@
 		echo wait_on_run impl_1 >> $@
@@ -103,7 +103,7 @@ par.tcl:
 		echo if { ! '$$'complete } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
-		echo if { '$$'timing '&&' 1 } { >> $@
+		echo if { '$$'timing '&' 1 } { >> $@
 		echo     exit 1 >> $@
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@
