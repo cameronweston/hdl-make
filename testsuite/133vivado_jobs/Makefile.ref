@@ -4,8 +4,8 @@
 ########################################
 
 TOP_LIBRARY := work
-TOP_MODULE := xci_test
-PROJECT := xci_test
+TOP_MODULE := jobs_test
+PROJECT := jobs_test
 PROJECT_FILE := $(PROJECT).xpr
 TOOL_PATH := 
 TCL_INTERPRETER := vivado -mode batch -source
@@ -30,8 +30,8 @@ all: bitstream
 
 files.tcl:
 	@echo add_files -norecurse '{' >> $@
-	@echo 'vio_din2_w64_dout2_w64.xci' >> $@
-	@echo 'xci_test.vhd' >> $@
+	@echo '../files/gate.vhdl' >> $@
+	@echo '../files/gate3.vhd' >> $@
 	@echo '}' >> $@
 
 SYN_PRE_PROJECT_CMD := 
@@ -70,7 +70,7 @@ synthesize.tcl:
 		echo $(TCL_OPEN) >> $@
 		echo # synthesize properties >> $@
 		echo reset_run synth_1 >> $@
-		echo launch_runs synth_1 >> $@
+		echo launch_runs synth_1 -jobs 123 >> $@
 		echo wait_on_run synth_1 >> $@
 		echo set result [get_property STATUS [get_runs synth_1]] >> $@
 		echo set complete [string match \"*Complete*\" '$$'result] >> $@
@@ -83,7 +83,7 @@ synthesize.tcl:
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@
 
-synthesize: project synthesize.tcl xci_test.vhd
+synthesize: project synthesize.tcl ../files/gate.vhdl ../files/gate3.vhd
 		$(SYN_PRE_SYNTHESIZE_CMD)
 		$(TCL_INTERPRETER) $@.tcl
 		$(SYN_POST_SYNTHESIZE_CMD)
@@ -93,7 +93,7 @@ par.tcl:
 		echo $(TCL_OPEN) >> $@
 		echo # par properties >> $@
 		echo reset_run impl_1 >> $@
-		echo launch_runs impl_1 >> $@
+		echo launch_runs impl_1 -jobs 123 >> $@
 		echo wait_on_run impl_1 >> $@
 		echo set result [get_property STATUS [get_runs impl_1]] >> $@
 		echo set complete [string match \"*Complete*\" '$$'result] >> $@

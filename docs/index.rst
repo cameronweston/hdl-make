@@ -179,7 +179,17 @@ As a prerequisite, you must have the following programs installed in your host m
 
 .. note:: In order to support Python 2.7.x and 3.x with a single codebase, the ``six`` Python package is now required to run ``hdlmake`` 3.0 version.
 
-There are two methods to obtain and install ``hdlmake``: via git repository or PyPI. PyPI is the preferred method if you are only interested in releases. Git may be preferred if you are a developer, or would like to stay in sync with active development.
+There are three methods to obtain and install ``hdlmake``: via git repository, PyPI or `guix <https://guix.gnu.org/>`_. PyPI is the preferred method if you are only interested in releases. Git may be preferred if you are a developer, or would like to stay in sync with active development. Guix provides recent development versions.
+
+Guix
+~~~~
+
+To install directly from `Guix <https://guix.gnu.org/>`_ simply run:
+
+.. code-block:: bash
+
+   guix install hdlmake
+
 
 PyPI and ``pip``
 ~~~~~~~~~~~~~~~~

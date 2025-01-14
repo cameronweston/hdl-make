@@ -31,7 +31,7 @@ all: bitstream
 
 files.tcl:
 		@echo prj_src remove -all >> $@
-		echo 'prj_src add ../files/gate.vhdl' >> $@
+	@echo 'prj_src add ../files/gate.vhdl' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 

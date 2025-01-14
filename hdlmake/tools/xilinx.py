@@ -27,8 +27,6 @@
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
 from .xilinx_prj import ToolXilinxProject
-from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile, TCLFile, SourceFile
-from ..util import shell
 import logging
 
 
@@ -42,7 +40,7 @@ class ToolXilinx(ToolXilinxProject, MakefileSyn):
 $(TCL_OPEN)
 {1}
 reset_run {0}
-launch_runs {0}
+launch_runs {0}{njobs_string}
 wait_on_run {0}
 set result [get_property STATUS [get_runs {0}]]
 set complete [string match \\"*Complete*\\" '$$'result]
@@ -138,6 +136,9 @@ $(TCL_CLOSE)'''
                 tmp = prop_val
                 project_prop.append(tmp.format(prop[0], prop[1], prop[2]))
         fail_on_timing = int(self.manifest_dict.get("syn_fail_on_timing", True))
+        njobs_string = ""
+        if "syn_jobs" in self.manifest_dict:
+            njobs_string = " -jobs {}".format(int(self.manifest_dict.get("syn_jobs", 2)))
         tmp_dict = {}
         tmp_dict["project"] = self._tcl_controls["project"]
         tmp_dict["synthesize"] = self._tcl_controls["synthesize"]
@@ -148,9 +149,11 @@ $(TCL_CLOSE)'''
         self._tcl_controls["synthesize"] = tmp_dict["synthesize"].format(
             "synth_1",
             "\n".join(synthesize_new),
+            njobs_string=njobs_string,
             fail_on_timing=fail_on_timing)
         self._tcl_controls["par"] = tmp_dict["par"].format(
             "impl_1",
             "\n".join(par_new),
+            njobs_string=njobs_string,
             fail_on_timing=fail_on_timing)
         super(ToolXilinx, self)._makefile_syn_tcl()

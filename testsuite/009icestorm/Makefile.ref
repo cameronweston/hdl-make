@@ -25,7 +25,7 @@ endif
 all: bitstream
 
 files.tcl:
-		echo 'read_verilog ../files/gate2.v' >> $@
+	@echo 'read_verilog ../files/gate2.v' >> $@
 
 SYN_PRE_SYNTHESIZE_CMD := 
 SYN_POST_SYNTHESIZE_CMD := 

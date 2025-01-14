@@ -33,14 +33,14 @@ files.tcl:
 		@echo add_library -library lib_a >> $@
 		@echo add_library -library lib_b >> $@
 		@echo add_library -library lib_c >> $@
-		echo 'create_links -hdl_source rtl/lib_a/axi_regs_a.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_a/register_access_fns_pkg.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_a/register_types_pkg.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_b/axi_regs_b.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_b/register_access_fns_pkg.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_b/register_types_pkg.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_c/merged_top.vhd' >> $@
-		echo 'create_links -hdl_source rtl/lib_c/repinned_top.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_a/axi_regs_a.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_a/register_access_fns_pkg.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_a/register_types_pkg.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_b/axi_regs_b.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_b/register_access_fns_pkg.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_b/register_types_pkg.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_c/merged_top.vhd' >> $@
+	@echo 'create_links -hdl_source rtl/lib_c/repinned_top.vhd' >> $@
 		echo 'add_file_to_library -library lib_a -file rtl/lib_a/axi_regs_a.vhd' >> $@
 		echo 'add_file_to_library -library lib_a -file rtl/lib_a/register_access_fns_pkg.vhd' >> $@
 		echo 'add_file_to_library -library lib_a -file rtl/lib_a/register_types_pkg.vhd' >> $@

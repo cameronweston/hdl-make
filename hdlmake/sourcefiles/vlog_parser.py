@@ -80,18 +80,15 @@ class VerilogPreprocessor(object):
     def _preprocess_file(self, file_content, file_name, library):
         """Preprocess the content of the Verilog file"""
         def _remove_comment(text):
-            """Function that removes the comments from the Verilog code"""
-            def replacer(match):
-                """Funtion that replace the matching comments"""
-                text = match.group(0)
-                if text.startswith('/'):
-                    return ""
-                else:
-                    return text
+            """Function that removes the comments and attributes from the
+            Verilog code.  Strings cannot be removed as they are
+            significat in `include directives"""
+            # Note: *? is the non-greedy version of *
             pattern = re.compile(
-                r'//.*?$|/\*.*?\*/|"(?:\\.|[^\\"])*"',
+                # //    or /* */  or attributes
+                r'//.*?$|/\*.*?\*/|\(\*.*?\*\)',
                 re.DOTALL | re.MULTILINE)
-            return re.sub(pattern, replacer, text)
+            return re.sub(pattern, "", text)
 
         def _filter_protected_regions(text):
             '''Remove regions demarked by `pragma protect being_protected/end_protected'''
@@ -233,9 +230,11 @@ class VerilogPreprocessor(object):
         # init dependencies
         logging.debug("preprocess file %s (of length %d) in library %s",
                       file_name, len(file_content), library)
-        buf = _filter_protected_regions(_remove_comment(file_content))
+        buf = _remove_comment(file_content)
+        buf = _filter_protected_regions(buf)
+        buf = _handle_macros(buf)
 
-        return _handle_macros(buf)
+        return buf
 
     def preprocess(self, vlog_file):
         """Assign the provided 'vlog_file' to the associated class property
@@ -541,7 +540,7 @@ class VerilogParser(DepParser):
             matches as indexed plain strings. It adds the found PROVIDE
             relations to the file"""
             pkg_name = text.group(1)
-            logging.debug("found pacakge %s.%s", dep_file.library, pkg_name)
+            logging.debug("found package %s.%s", dep_file.library, pkg_name)
             graph.add_provide(
                 dep_file,
                 DepRelation(pkg_name, dep_file.library, DepRelation.PACKAGE))

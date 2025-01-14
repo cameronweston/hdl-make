@@ -29,14 +29,14 @@ files.tcl:
 		echo lib_vhdl new lib_a >> $@
 		echo lib_vhdl new lib_b >> $@
 		echo lib_vhdl new lib_c >> $@
-		echo 'xfile add rtl/lib_a/axi_regs.vhd -lib_vhdl lib_a' >> $@
-		echo 'xfile add rtl/lib_a/register_access_fns_pkg.vhd -lib_vhdl lib_a' >> $@
-		echo 'xfile add rtl/lib_a/register_types_pkg.vhd -lib_vhdl lib_a' >> $@
-		echo 'xfile add rtl/lib_b/axi_regs.vhd -lib_vhdl lib_b' >> $@
-		echo 'xfile add rtl/lib_b/register_access_fns_pkg.vhd -lib_vhdl lib_b' >> $@
-		echo 'xfile add rtl/lib_b/register_types_pkg.vhd -lib_vhdl lib_b' >> $@
-		echo 'xfile add rtl/lib_c/merged_top.vhd -lib_vhdl lib_c' >> $@
-		echo 'xfile add rtl/lib_c/repinned_top.vhd -lib_vhdl lib_c' >> $@
+	@echo 'xfile add rtl/lib_a/axi_regs.vhd -lib_vhdl lib_a' >> $@
+	@echo 'xfile add rtl/lib_a/register_access_fns_pkg.vhd -lib_vhdl lib_a' >> $@
+	@echo 'xfile add rtl/lib_a/register_types_pkg.vhd -lib_vhdl lib_a' >> $@
+	@echo 'xfile add rtl/lib_b/axi_regs.vhd -lib_vhdl lib_b' >> $@
+	@echo 'xfile add rtl/lib_b/register_access_fns_pkg.vhd -lib_vhdl lib_b' >> $@
+	@echo 'xfile add rtl/lib_b/register_types_pkg.vhd -lib_vhdl lib_b' >> $@
+	@echo 'xfile add rtl/lib_c/merged_top.vhd -lib_vhdl lib_c' >> $@
+	@echo 'xfile add rtl/lib_c/repinned_top.vhd -lib_vhdl lib_c' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 

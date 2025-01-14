@@ -191,6 +191,10 @@ class ManifestParser(ConfigParser):
             {'name': 'syn_post_bitstream_cmd',
              'default': '',
              'help': "Command to be executed after synthesis: bitstream",
+             'type': ''},
+            {'name': 'syn_jobs',
+             'default': '2',
+             'help': "Number of parallel threads to be used for synthesis (Vivado only)",
              'type': ''}]
         self.add_option_list(syn_options)
         self.add_delimiter()

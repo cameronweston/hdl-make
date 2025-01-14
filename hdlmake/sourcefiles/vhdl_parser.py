@@ -92,6 +92,8 @@ class VHDLParser(DepParser):
                 # Work is an alias for the current library
                 lib_name = dep_file.library
             logging.debug("package %s is new %s.%s", new_pkg_name, lib_name, pkg_name)
+            graph.add_provide(
+                dep_file, DepRelation(new_pkg_name, dep_file.library, DepRelation.PACKAGE))
             graph.add_require(
                 dep_file, DepRelation(pkg_name, lib_name, DepRelation.PACKAGE))
             return "<hdlmake package_new_pattern %s.%s>" % (lib_name, pkg_name)

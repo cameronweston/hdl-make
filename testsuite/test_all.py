@@ -94,110 +94,110 @@ def test_filename_opt_062():
     run(['-f', 'my.mk'], path="062filename_opt")
     os.remove("062filename_opt/my.mk")
 
-def test_fetch():
+def test_fetch_001():
     run(['fetch'], path="001ise")
 
-def test_clean():
+def test_clean_001():
     run(['clean'], path="001ise")
 
-def test_list_mods_none():
+def test_list_mods_none_001():
     run(['list-mods'], path="001ise")
 
-def test_list_files():
+def test_list_files_001():
     run(['list-files'], path="001ise")
 
 def test_circular_dep_096():
     run(['list-files'], path="096circular_dep")
 
-def test_noact():
+def test_noact_005():
     with Config(path="005noact") as _:
         hdlmake.main.hdlmake(['manifest-help'])
         hdlmake.main.hdlmake(['list-files'])
         hdlmake.main.hdlmake(['list-mods', '--with-files'])
 
-def test_ahdl006():
+def test_ahdl_006():
     run_compare(path="006ahdl", my_os='windows')
 
-def test_diamond():
+def test_diamond_007():
     run_compare(path="007diamond")
 
-def test_ghdl():
+def test_ghdl_008():
     run_compare(path="008ghdl")
 
 def test_icestorm_009():
     run_compare_filter(filter="TOOL_PATH", path="009icestorm")
 
-def test_isim010():
+def test_isim_010():
     run_compare_xilinx(path="010isim")
 
-def test_isim_windows060():
+def test_isim_windows_060():
     run_compare_xilinx(path="060isim_windows",
                        my_os='windows', fakebin="windows_fakebin")
 
-def test_icarus012():
+def test_icarus_012():
     run_compare(path="012icarus")
 
 def test_icarus_include_083():
     run_compare(path="083icarus_include")
 
-def test_libero013():
+def test_libero_013():
     run_compare(path="013libero")
 
-def test_planahead014():
+def test_planahead_014():
     run_compare(path="014planahead")
 
-def test_quartus015():
+def test_quartus_015():
     run_compare(path="015quartus")
 
-def test_quartus016():
+def test_quartus_016():
     run_compare(path="016quartus_nofam")
 
-def test_quartus033():
+def test_quartus_033():
     run_compare(path="033quartus")
 
 def test_quartus_windows102():
     assert hdlmake.util.shell.check_windows_tools() is False
     run_compare(path="102quartus_windows", my_os='windows')
 
-def test_quartus034():
+def test_quartus_034():
     run([], path="034quartus_prop")
     os.remove("034quartus_prop/Makefile")
 
-def test_quartus035():
+def test_quartus_035():
     with pytest.raises(SystemExit) as _:
         run([], path="035quartus_err")
     print(os.getcwd())
 
-def test_quartus036():
+def test_quartus_036():
     with pytest.raises(SystemExit) as _:
         run([], path="036quartus_err")
 
-def test_quartus037():
+def test_quartus_037():
     with pytest.raises(SystemExit) as _:
         run([], path="037quartus_err")
 
-def test_quartus038():
+def test_quartus_038():
     with pytest.raises(SystemExit) as _:
         run([], path="038quartus_err")
 
-def test_quartus039():
+def test_quartus_039():
     with pytest.raises(SystemExit) as _:
         run([], path="039quartus_err")
     #os.remove('039quartus_err/Makefile')
 
-def test_riviera017():
+def test_riviera_017():
     run_compare(path="017riviera")
 
-def test_vivado018():
+def test_vivado_018():
     run_compare(path="018vivado")
 
-def test_vivado_props054():
+def test_vivado_props_054():
     run_compare(path="054vivado_props")
 
-def test_vivado_sim019():
+def test_vivado_sim_019():
     run_compare(path="019vsim")
 
-def test_git_fetch():
+def test_git_fetch_020():
     with Config(path="020git_fetch") as _:
         hdlmake.main.hdlmake(['list-files'])
         hdlmake.main.hdlmake(['fetch'])
@@ -208,123 +208,129 @@ def test_git_fetch():
         #  shutil.rmtree('ipcores.old', ignore_errors=True)
         #  shutil.move('ipcores', 'ipcores.old')
 
-def test_git_fetch_branch():
+def test_git_fetch_branch_055():
     with Config(path="055git_fetch_branch") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_git_fetch_rev():
+def test_git_fetch_rev_056():
     with Config(path="056git_fetch_rev") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_git_fetch_url():
+def test_git_fetch_url_073():
     with Config(path="073git_fetch_url") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_git_fetch_url2():
+def test_git_fetch_url2_074():
     with Config(path="074git_fetch_url") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_git_fetch_err():
+def test_git_fetch_err_075():
     with pytest.raises(SystemExit) as _:
         run(['fetch'], path="075err_git")
     shutil.rmtree('ipcores', ignore_errors=True)
 
-def test_svn_fetch_err():
+def test_svn_fetch_err_094():
     with pytest.raises(SystemExit) as _:
         run(['--full-error', 'fetch'], path="094err_svn")
     shutil.rmtree('094err_svn/ipcores', ignore_errors=True)
 
-def test_svn_fetch():
+def test_svn_fetch_021():
     with Config(path="021svn_fetch") as _:
         hdlmake.main.hdlmake(['list-mods'])
         hdlmake.main.hdlmake(['fetch'])
         hdlmake.main.hdlmake(['list-mods', '--with-files'])
         shutil.rmtree('ipcores')
 
-def test_svn_fetch_rev():
+def test_svn_fetch_rev_072():
     with Config(path="072svn_fetch_rev") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_gitsm_fetch():
+def test_gitsm_fetch_022():
     with Config(path="022gitsm_fetch") as _:
         hdlmake.main.hdlmake(['fetch'])
         hdlmake.main.hdlmake(['list-mods'])
         hdlmake.main.hdlmake(['clean'])
         shutil.rmtree('ipcores')
 
-def test_git_fetch_cmds():
+def test_git_fetch_cmds_065():
     with Config(path="065fetch_pre_post") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_sub_fetch():
+def test_sub_fetch_095():
     with Config(path="095sub_fetch") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_err_fetch():
+def test_err_fetch_065():
     with pytest.raises(SystemExit) as _:
         run([], path="065fetch_pre_post")
         assert False
 
-def test_xci023():
+def test_xci_023():
     run_compare(path="023xci")
 
-def test_xci104():
+def test_xci_104():
     run_compare(path="104xci")
 
-def test_xci_json105():
+def test_xci_json_105():
     run_compare(path="105xci_json")
 
-def test_xcix106():
+def test_xcix_106():
     run_compare(path="106xcix")
 
-def test_vlog_parser024():
+def test_vlog_parser_024():
     run_compare(path="024vlog_parser")
 
-def test_vlog_parser025():
+def test_vlog_parser_025():
     run_compare(path="025vlog_parser")
 
-def test_vlog_parser099():
+def test_vlog_parser_099():
     run_compare(path="099vlog_parser")
 
-def test_vlog_inc103():
+def test_vlog_inc_103():
     run_compare(path="103vlog_inc")
 
-def test_gitsm_fetch026():
+def test_vlog_attr131():
+    run_compare(path="131vlog_attr")
+
+def test_vlog_comment132():
+    run_compare(path="132vlog_comment")
+
+def test_gitsm_fetch_026():
     with Config(path="026gitsm_fetch") as _:
         hdlmake.main.hdlmake(['fetch'])
         shutil.rmtree('ipcores')
 
-def test_vhdl_parser027():
+def test_vhdl_parser_027():
     run_compare(path="027vhdl_parser")
 
-def test_vhdl_parser100():
+def test_vhdl_parser_100():
     run_compare(path="100vhdl_parser")
 
-def test_vhdl_context101():
+def test_vhdl_context_101():
     run_compare(path="101vhdl_context")
 
-def test_manifest_print():
+def test_manifest_print_028():
     run([], path="028manifest_print")
     os.remove('028manifest_print/Makefile')
 
-def test_manifest_quit():
+def test_manifest_quit_029():
     with pytest.raises(SystemExit) as _:
         run([], path="029manifest_quit")
         assert False
 
-def test_manifest_syntax():
+def test_manifest_syntax_030():
     with pytest.raises(SystemExit) as _:
         run([], path="030manifest_syntax")
         assert False
 
-def test_manifest_except():
+def test_manifest_except_031():
     with pytest.raises(SystemExit) as _:
         run([], path="031manifest_except")
         assert False
@@ -340,38 +346,38 @@ def test_manifest_vars_032():
 def test_srcfiles_040():
     run_compare(path="040srcfiles")
 
-def test_no_syn_tool():
+def test_no_syn_tool_041():
     with pytest.raises(SystemExit) as _:
         run([], path="041err_syn")
         assert False
 
-def test_no_files():
+def test_no_files_042():
     run([], path="042nofiles")
     os.remove("042nofiles/Makefile")
 
 def test_no_bin_061():
     run_compare_xilinx(path="061err_nobin", fakebin="no_fakebin")
 
-def test_local043():
+def test_local_043():
     run_compare(path="043local_fetch")
 
-def test_files_dir():
+def test_files_dir_044():
     # Not sure we want to keep this feature: allow to specify a directory
     # as a file (will be replaced by all the files in the directory)
     run_compare(path="044files_dir")
 
-def test_incl_makefile():
+def test_incl_makefile_045():
     run_compare(path="045incl_makefile")
 
-def test_incl_makefiles():
+def test_incl_makefiles_046():
     run_compare(path="046incl_makefiles")
 
-def test_abs_local():
+def test_abs_local_047():
     with pytest.raises(SystemExit) as _:
         run([], path="047err_abs_local")
         assert False
 
-def test_two_manifest():
+def test_two_manifest_048():
     d = "048err_two_manifest"
     # Create manifest.py dynamically so that you can clone the
     # repo on windows/macosx
@@ -380,7 +386,7 @@ def test_two_manifest():
         run([], path=d)
     os.remove(d + "/manifest.py")
 
-def test_no_manifest():
+def test_no_manifest_049():
     with pytest.raises(SystemExit) as _:
         run([], path="049err_no_manifest")
 
@@ -422,36 +428,36 @@ def test_configparser_unexpected_key():
     with pytest.raises(RuntimeError) as _:
         p.add_allowed_key("a", key="k")
 
-def test_err_manifest_type():
+def test_err_manifest_type_050():
     with pytest.raises(SystemExit) as _:
         run([], path="050err_manifest_type")
 
-def test_err_manifest_key():
+def test_err_manifest_key_051():
     with pytest.raises(SystemExit) as _:
         run([], path="051err_manifest_key")
 
-def test_svlog_parser():
+def test_svlog_parser_052():
     run_compare(path="052svlog_parser")
 
-def test_err_vlog_include():
+def test_err_vlog_include_077():
     with pytest.raises(SystemExit) as _:
         run([], path="077err_vlg_include")
 
-def test_err_vlog_define():
+def test_err_vlog_define_078():
     with pytest.raises(SystemExit) as _:
         run([], path="078err_vlg_define")
 
-def test_err_vlog_no_macro():
+def test_err_vlog_no_macro_079():
     run_compare(path="079err_vlg_macro")
 
-def test_err_vlog_recursion():
+def test_err_vlog_recursion_080():
     with pytest.raises(SystemExit) as _:
         run([], path="080err_vlg_recursion")
 
 def test_vlog_ifdef_elsif_else_081():
     run_compare(path="081vlog_ifdef_elsif_else")
 
-def test_dep_level():
+def test_dep_level_053():
     run(['list-files'], path="053vlog_dep_level")
     run(['list-files', '--delimiter', ','], path="053vlog_dep_level")
     run(['list-files', '--reverse'], path="053vlog_dep_level")
@@ -461,41 +467,41 @@ def test_modelsim_windows_057():
     assert hdlmake.util.shell.check_windows_tools() is False
     run_compare(path="057msim_windows", my_os='windows')
 
-def test_nosim_tool():
+def test_nosim_tool_063():
     with pytest.raises(SystemExit) as _:
         run([], path="063err_nosim_tool")
 
-def test_err_action():
+def test_err_action_064():
     with pytest.raises(SystemExit) as _:
         run([], path="064err_action")
 
-def test_err_loglevel():
+def test_err_loglevel_002():
     with pytest.raises(SystemExit) as _:
         run(['--log', 'unknown', 'makefile'], path="002msim")
 
-def test_err_noaction():
+def test_err_noaction_002():
     run(['--log', 'warning'], path="002msim")
     os.remove("002msim/Makefile")
 
-def test_all_files():
+def test_all_files_002():
     run(['-a', 'makefile'], path="002msim")
     os.remove("002msim/Makefile")
 
-def test_err_sim_top():
+def test_err_sim_top_006():
     with pytest.raises(SystemExit) as _:
         run([], path="066err_sim_top")
 
-def test_err_syn_dev():
+def test_err_syn_dev_067():
     with pytest.raises(SystemExit) as _:
         run([], path="067err_syndev")
         assert False
 
-def test_err_syn_grade():
+def test_err_syn_grade_068():
     with pytest.raises(SystemExit) as _:
         run([], path="068err_syngrade")
         assert False
 
-def test_err_syn_package():
+def test_err_syn_package_069():
     with pytest.raises(SystemExit) as _:
         run([], path="069err_synpackage")
         assert False
@@ -503,49 +509,49 @@ def test_err_syn_package():
 def test_err_syn_top_070():
     run_compare(path="070err_syntop")
 
-def test_extra_modules076():
+def test_extra_modules_076():
     run_compare(path="076extra_modules")
 
-def test_err_syntool():
+def test_err_syntool_084():
     with pytest.raises(SystemExit) as _:
         run([], path="084bad_syn")
         assert False
 
-def test_err_simtool():
+def test_err_simtool_085():
     with pytest.raises(SystemExit) as _:
         run([], path="085bad_sim")
         assert False
 
-def test_err_ise_no_family():
+def test_err_ise_no_family_086():
     with pytest.raises(SystemExit) as _:
         run([], path="086ise_no_family")
         assert False
 
-def test_many_modules():
+def test_many_modules_087():
     run_compare(path="087many_modules")
 
-def test_file_abs():
+def test_file_abs_088():
     run_compare(path="088bad_file_abs")
 
-def test_err_missing_file():
+def test_err_missing_file_089():
     with pytest.raises(SystemExit) as _:
         run([], path="089missing_file")
         assert False
 
-def test_err_missing_module():
+def test_err_missing_module_090():
     with pytest.raises(SystemExit) as _:
         run([], path="090missing_module")
         assert False
 
-def test_library():
+def test_library_091():
     run_compare(path="091library")
 
-def test_err_filetype():
+def test_err_filetype_092():
     with pytest.raises(SystemExit) as _:
         run([], path="092bad_filetype")
         assert False
 
-def test_multi_sat093():
+def test_multi_sat_093():
     with Config(path="093multi_sat"):
         hdlmake.main.hdlmake([])
         # Output is not deterministic
@@ -623,6 +629,9 @@ def test_specify_top_library_129():
 
 def test_specify_top_library_explict_130():
     run_compare(path="130specify_top_library_explicit")
+
+def test_vivado_jobs_133():
+    run_compare(path="133vivado_jobs")
 
 @pytest.mark.xfail
 def test_xfail():

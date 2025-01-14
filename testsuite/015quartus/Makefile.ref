@@ -28,7 +28,7 @@ endif
 all: bitstream
 
 files.tcl:
-		echo 'set_global_assignment -name VHDL_FILE ../files/gate.vhdl -library work' >> $@
+	@echo 'set_global_assignment -name VHDL_FILE ../files/gate.vhdl -library work' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 

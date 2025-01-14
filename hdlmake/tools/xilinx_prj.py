@@ -25,7 +25,7 @@
 
 
 from __future__ import absolute_import
-from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile, TCLFile, SourceFile
+from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile, TCLFile
 from ..util import shell
 
 
@@ -55,6 +55,7 @@ class ToolXilinxProject:
     def write_commands_project(self):
         """Write TCL commands (in a makefile) to populate a Xilinx project
             with the fileset
+           Xilinx redefine the function as it adds files in batch
         """
         fileset_dict = {}
         fileset_dict.update(self.HDL_FILES)
@@ -62,24 +63,10 @@ class ToolXilinxProject:
         # Add all files at once.
         self.writeln("\t@echo add_files -norecurse '{' >> $@")
         for srcfile in self.fileset.sort():
-            if type(srcfile) in fileset_dict:
+            if type(srcfile) in fileset_dict \
+               and not isinstance(srcfile, TCLFile):
                 self.writeln("\t@echo '{}' >> $@".format(
                     shell.tclpath(srcfile.rel_path())))
         self.writeln("\t@echo '}' >> $@")
         # Add per file properties (like library)
-        for srcfile in self.fileset.sort():
-            command = fileset_dict.get(type(srcfile))
-            # Put the file in files.tcl only if it is supported.
-            if command is not None:
-                self._all_sources.append(srcfile.rel_path())
-                # Libraries are defined only for hdl files.
-                if isinstance(srcfile, SourceFile):
-                    library = srcfile.library
-                else:
-                    library = None
-                if callable(command):
-                    command = command(srcfile)
-                cmd = command.format(srcfile=shell.tclpath(srcfile.rel_path()),
-                                     library=library)
-                if cmd:
-                    self.writeln("\t@echo '{}' >> $@".format(cmd))
+        self._makefile_syn_files_cmd(fileset_dict)

@@ -10,4 +10,4 @@ syn_project = "gate.xise"
 
 syn_tool = "vivado"
 
-files = [ "../files/gate.vhdl" ]
+files = [ "../files/gate.vhdl", "cmd.tcl" ]

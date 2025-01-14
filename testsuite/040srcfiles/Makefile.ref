@@ -26,7 +26,7 @@ TCL_CLOSE := project close
 all: bitstream
 
 files.tcl:
-		echo 'xfile add f2.sv' >> $@
+	@echo 'xfile add f2.sv' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 

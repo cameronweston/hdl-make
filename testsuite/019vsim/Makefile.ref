@@ -38,7 +38,7 @@ project.tcl: Makefile
 	@echo "exit" >> $@
 
 project: project.tcl
-	vivado -mode tcl -source $<
+	vivado -mode batch -source $<
 
 # USER SIM COMMANDS
 sim_pre_cmd:

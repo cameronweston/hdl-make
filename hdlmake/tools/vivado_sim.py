@@ -26,7 +26,6 @@
 
 from __future__ import absolute_import
 from .makefilesim import MakefileSim
-from ..sourcefiles.srcfile import VerilogFile, VHDLFile, SVFile
 from .xilinx_prj import ToolXilinxProject
 from ..util import shell
 
@@ -38,8 +37,8 @@ class ToolVivadoSim(ToolXilinxProject, MakefileSim):
     TOOL_INFO = {
         'name': 'vivado-sim',
         'id': 'vivado-sim',
-        'windows_bin': 'vivado -mode tcl -source',
-        'linux_bin': 'vivado -mode tcl -source',
+        'windows_bin': 'vivado -mode batch -source',
+        'linux_bin': 'vivado -mode batch -source',
     }
 
     STANDARD_LIBS = ['ieee', 'std']

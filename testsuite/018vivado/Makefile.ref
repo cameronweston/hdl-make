@@ -8,7 +8,7 @@ TOP_MODULE := gate
 PROJECT := gate
 PROJECT_FILE := $(PROJECT).xpr
 TOOL_PATH := 
-TCL_INTERPRETER := vivado -mode tcl -source
+TCL_INTERPRETER := vivado -mode batch -source
 ifneq ($(strip $(TOOL_PATH)),)
 TCL_INTERPRETER := $(TOOL_PATH)/$(TCL_INTERPRETER)
 endif
@@ -32,6 +32,7 @@ files.tcl:
 	@echo add_files -norecurse '{' >> $@
 	@echo '../files/gate.vhdl' >> $@
 	@echo '}' >> $@
+	@echo 'source cmd.tcl' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 
@@ -44,6 +45,9 @@ SYN_POST_PAR_CMD :=
 
 SYN_PRE_BITSTREAM_CMD := 
 SYN_POST_BITSTREAM_CMD := 
+
+SYN_PRE_PROM_CMD := 
+SYN_POST_PROM_CMD := 
 
 project.tcl:
 		echo $(TCL_CREATE) >> $@
@@ -79,7 +83,7 @@ synthesize.tcl:
 		echo } >> $@
 		echo $(TCL_CLOSE) >> $@
 
-synthesize: project synthesize.tcl ../files/gate.vhdl
+synthesize: project synthesize.tcl cmd.tcl ../files/gate.vhdl
 		$(SYN_PRE_SYNTHESIZE_CMD)
 		$(TCL_INTERPRETER) $@.tcl
 		$(SYN_POST_SYNTHESIZE_CMD)
@@ -120,12 +124,23 @@ bitstream: par bitstream.tcl
 		$(SYN_POST_BITSTREAM_CMD)
 		touch $@
 
-CLEAN_TARGETS := $(LIBS) .Xil *.jou *.log *.pb *.dmp $(PROJECT).cache $(PROJECT).data work $(PROJECT).runs $(PROJECT).hw $(PROJECT).sim $(PROJECT).ip_user_files $(PROJECT).srcs $(PROJECT).gen $(PROJECT_FILE)
+prom.tcl:
+		echo $(TCL_OPEN) >> $@
+		echo write_hw_platform -fixed -force -include_bit -file $(PROJECT).xsa >> $@
+		echo $(TCL_CLOSE) >> $@
+
+prom: bitstream prom.tcl
+		$(SYN_PRE_PROM_CMD)
+		$(TCL_INTERPRETER) $@.tcl
+		$(SYN_POST_PROM_CMD)
+		touch $@
+
+CLEAN_TARGETS := $(LIBS) .Xil *.jou *.log *.pb *.dmp *.xsa $(PROJECT).cache $(PROJECT).data work $(PROJECT).runs $(PROJECT).hw $(PROJECT).sim $(PROJECT).gen $(PROJECT).ip_user_files $(PROJECT).srcs $(PROJECT_FILE)
 
 clean:
 		rm -rf $(CLEAN_TARGETS)
-		rm -rf project synthesize par bitstream
-		rm -rf project.tcl synthesize.tcl par.tcl bitstream.tcl files.tcl
+		rm -rf project synthesize par bitstream prom
+		rm -rf project.tcl synthesize.tcl par.tcl bitstream.tcl prom.tcl files.tcl
 
 mrproper: clean
 		rm -rf *.bit *.bin

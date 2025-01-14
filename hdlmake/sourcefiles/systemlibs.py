@@ -49,6 +49,8 @@ def build_xilinx():
               'plle2_adv', 'plle2_base',
               'bufpll_mcb', 'mcb', 'iodrp2', 'iodrp2_mcb',
               'mmcme3_adv',
+              'mmcme4_base',
+              'ibufds_gte4', 'bufg_gt', 'gthe4_common', 'gthe4_channel',
               'icap_spartan6', 'bscan_spartan6',
               'gtxe2_channel', 'gtxe2_common', 'gtpa1_dual',
               'dsp48a1',

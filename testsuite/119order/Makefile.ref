@@ -26,9 +26,9 @@ TCL_CLOSE := project close
 all: bitstream
 
 files.tcl:
-		echo 'xfile add sub/sub.ucf' >> $@
-		echo 'xfile add top.ucf' >> $@
-		echo 'xfile add ../files/gate.vhdl' >> $@
+	@echo 'xfile add sub/sub.ucf' >> $@
+	@echo 'xfile add top.ucf' >> $@
+	@echo 'xfile add ../files/gate.vhdl' >> $@
 
 SYN_PRE_PROJECT_CMD := 
 SYN_POST_PROJECT_CMD := 
